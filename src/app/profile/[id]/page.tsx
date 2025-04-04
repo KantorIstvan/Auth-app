@@ -1,6 +1,13 @@
+import { Metadata } from "next";
+
 type Props = {
   params: { id: string };
-  searchParams: { [key: string]: string | string[] | undefined };
+};
+
+export const generateMetadata = ({ params }: Props): Metadata => {
+  return {
+    title: `User Profile - ${params.id}`,
+  };
 };
 
 export default function UserProfile({ params }: Props) {
