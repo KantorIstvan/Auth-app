@@ -5,7 +5,6 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useState } from "react";
-import { useEffect } from "react";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -15,9 +14,12 @@ export default function ProfilePage() {
       await axios.get("/api/users/logout");
       toast.success("Logout successful!");
       router.push("/login");
-    } catch (error: any) {
-      console.log(error.message);
-      toast.error(error.message);
+    } catch (error: unknown) {
+      console.log("Login error", error);
+      const errorMessage = axios.isAxiosError(error)
+        ? error.response?.data?.error || "Login failed"
+        : "An unexpected error occurred";
+      toast.error(errorMessage);
     }
   };
 
@@ -26,9 +28,12 @@ export default function ProfilePage() {
       const res = await axios.get("/api/users/me");
       console.log(res.data.data._id);
       setData(res.data.data._id);
-    } catch (error: any) {
-      console.log(error.message);
-      toast.error(error.message);
+    } catch (error: unknown) {
+      console.log("Login error", error);
+      const errorMessage = axios.isAxiosError(error)
+        ? error.response?.data?.error || "Login failed"
+        : "An unexpected error occurred";
+      toast.error(errorMessage);
     }
   };
 

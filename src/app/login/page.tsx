@@ -21,9 +21,12 @@ export default function LoginPage() {
       console.log("Login success", response.data);
       toast.success("Login successful!");
       router.push("/profile");
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.log("Login error", error);
-      toast.error(error.message);
+      const errorMessage = axios.isAxiosError(error)
+        ? error.response?.data?.error || "Login failed"
+        : "An unexpected error occurred";
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
